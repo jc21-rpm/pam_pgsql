@@ -1,0 +1,27 @@
+#!/bin/bash
+
+CWD=`pwd`
+PACKAGE=pam_pgsql
+DOCKER_IMAGE=jc21/rpmbuild-centos7
+BUILD_TAG=centos7-$PACKAGE-manual-run
+
+rm -rf RPMS SRPMS DEPS BUILD BUILDROOT
+mkdir -p {RPMS,SRPMS,DEPS,BUILD,BUILDROOT} && chmod -R 777 {RPMS,SRPMS,DEPS,BUILD,BUILDROOT}
+
+# Copy deps manually
+
+CMD="sudo docker run --rm \
+  --name rpmbuild-$BUILD_TAG \
+  -v $CWD/BUILD:/home/rpmbuilder/rpmbuild/BUILD \
+  -v $CWD/BUILDROOT:/home/rpmbuilder/rpmbuild/BUILDROOT \
+  -v $CWD/RPMS:/home/rpmbuilder/rpmbuild/RPMS \
+  -v $CWD/SRPMS:/home/rpmbuilder/rpmbuild/SRPMS \
+  -v $CWD/SPECS:/home/rpmbuilder/rpmbuild/SPECS \
+  -v $CWD/SOURCES:/home/rpmbuilder/rpmbuild/SOURCES \
+  $DOCKER_IMAGE \
+  /bin/build-spec $BUILD_SPEC_ARGS -- /home/rpmbuilder/rpmbuild/SPECS/$PACKAGE.spec"
+
+$CMD
+
+exit $?
+
