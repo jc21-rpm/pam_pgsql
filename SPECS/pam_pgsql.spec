@@ -1,7 +1,7 @@
 Summary:        This module provides support to authenticate against PostgreSQL tables for PAM-enabled appliations
 Name:           pam_pgsql
 Version:        0.7.3.2
-Release:        1
+Release:        1%{?dist}
 Epoch:          1
 License:        GPLv2+
 Group:          System Environment/Base
