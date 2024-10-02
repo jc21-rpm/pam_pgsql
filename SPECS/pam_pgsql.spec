@@ -7,8 +7,7 @@ License:        GPLv2+
 Group:          System Environment/Base
 Source:         https://github.com/pam-pgsql/pam-pgsql/archive/release-%{version}.tar.gz
 URL:            https://github.com/pam-pgsql/pam-pgsql
-BuildRequires:  pam-devel
-BuildRequires:  autoconf automake libtool
+BuildRequires:  autoconf automake libtool libgcrypt-devel pam-devel
 Requires:       pam
 
 %global debug_package %{nil}
@@ -24,17 +23,11 @@ the two as a reference.
 %prep
 %setup -q -n pam-pgsql-release-%{version}
 ./autogen.sh
-#mv CREDITS AUTHORS
 autoreconf -fiv
 
 %build
 %configure
-
 make %{?_smp_mflags}
-
-#mv AUTHORS AUTHORS.lame
-#iconv -f latin1 -t utf-8 -o AUTHORS AUTHORS.lame
-#touch -r README AUTHORS
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -46,7 +39,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-# usr/share/doc/pam-pgsql/CHANGELOG
 /usr/share/doc/pam-pgsql/CHANGELOG
 /usr/share/doc/pam-pgsql/COPYRIGHT
 /usr/share/doc/pam-pgsql/CREDITS
@@ -57,4 +49,3 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Mon May 27 2019 Jamie Curnow <jc@j21.com> - 0.7.3.2-1
 - Initial spec
-
