@@ -1,0 +1,10 @@
+--- pam-pgsql-release-0.7.3.2.orig/src/backend_pgsql.c	2026-09-30 12:29:25.403330924 +1000
++++ pam-pgsql-release-0.7.3.2/src/backend_pgsql.c	2026-09-30 12:29:25.405217659 +1000
+@@ -21,6 +21,7 @@
+ #include <libpq-fe.h>
+ #include <sys/types.h>
+ #include <unistd.h>
++#include <crypt.h>
+ #include <netdb.h>
+ #include <arpa/inet.h>
+ 

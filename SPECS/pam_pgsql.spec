@@ -6,8 +6,15 @@ Epoch:          1
 License:        GPLv2+
 Group:          System Environment/Base
 Source:         https://github.com/pam-pgsql/pam-pgsql/archive/release-%{version}.tar.gz
+Patch0:         pam_pgsql-crypt-include.patch
 URL:            https://github.com/pam-pgsql/pam-pgsql
 BuildRequires:  autoconf automake libtool libgcrypt-devel pam-devel
+%if 0%{?rhel} >= 10
+# postgresql-private-devel conflicts with libpq-devel and its pg_config needs server-devel
+BuildRequires:  postgresql-server-devel
+%else
+BuildRequires:  libpq-devel
+%endif
 Requires:       pam
 
 %global debug_package %{nil}
@@ -22,6 +29,7 @@ the two as a reference.
 
 %prep
 %setup -q -n pam-pgsql-release-%{version}
+%patch -P 0 -p1
 ./autogen.sh
 autoreconf -fiv
 
